@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ameli-extract"
+version = "0.1.0"
+description = "Local, anonymizing extraction of Ameli healthcare-payment PDFs to JSON"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pdfplumber>=0.11,<1"]
+
+[project.optional-dependencies]
+dev = ["reportlab>=4,<5", "ruff>=0.11,<1"]
+
+[project.scripts]
+ameli-extract = "ameli_extract.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ameli_extract"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

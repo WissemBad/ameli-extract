@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Health documents and their derived data are private.
+*.pdf
+*.json
+!examples/sample.json
+*.json.tmp
+exports/

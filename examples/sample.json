@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "nombre_pages": 1
+  },
+  "document": {
+    "type": "paiement_tiers_ameli",
+    "date_releve": "2026-04-12",
+    "cpam": {
+      "nom_et_coordonnees": [
+        "Caisse d'assurance maladie de Lille"
+      ]
+    }
+  },
+  "beneficiaires": [
+    {
+      "id": "beneficiaire_1",
+      "date_naissance": "1980-03-02"
+    }
+  ],
+  "groupes": [
+    {
+      "id": "groupe_1_1",
+      "beneficiaire_id": "beneficiaire_1",
+      "prise_en_charge": null,
+      "professionnel": "Cabinet médical fictif",
+      "informations_complementaires": [
+        "Professionnel : Cabinet médical fictif"
+      ],
+      "prestations": [
+        {
+          "date_soin": "2026-04-10",
+          "nature": "Consultation de médecine générale",
+          "montant_paye": null,
+          "base_remboursement": "30.00",
+          "taux_remboursement": "70.00",
+          "montant_verse": "21.00",
+          "taux_complementaire": "100.00",
+          "montant_complementaire": "9.00",
+          "indications": [],
+          "page": 1,
+          "ligne": 1
+        }
+      ]
+    }
+  ],
+  "reglements": [
+    {
+      "date": "2026-04-12",
+      "destinataire": "Cabinet médical fictif",
+      "montant": "30.00",
+      "groupes": [
+        "groupe_1_1"
+      ],
+      "page": 1
+    }
+  ],
+  "sections_complementaires": [],
+  "validation": {
+    "statut": "complet",
+    "anomalies": []
+  }
+}
