@@ -30,7 +30,7 @@ class SyntheticAmeliPdf(unittest.TestCase):
         settlement: str = "30,00",
     ) -> None:
         document = canvas.Canvas(str(path), pagesize=A4)
-        width, height = A4
+        _width, height = A4
 
         def text(x: float, top: float, value: str, size: int = 8) -> None:
             document.setFont("Helvetica", size)

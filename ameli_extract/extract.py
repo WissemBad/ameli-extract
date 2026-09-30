@@ -6,7 +6,7 @@ import hashlib
 import re
 import unicodedata
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
@@ -94,7 +94,8 @@ def _iso_date(value: str) -> str | None:
     if not match:
         return None
     try:
-        return datetime.strptime(match.group(0), "%d/%m/%Y").date().isoformat()
+        day, month, year = (int(part) for part in match.groups())
+        return date(year, month, day).isoformat()
     except ValueError:
         return None
 
@@ -139,9 +140,11 @@ def _find_header(page: pdfplumber.page.Page, lines: list[_WordLine]) -> _Header 
         anchors: list[dict[str, Any]] = []
         for word in sorted(header_words, key=lambda item: (float(item["top"]), float(item["x0"]))):
             token = _fold(str(word["text"]).strip(".:;"))
-            if token in {"montant", "base", "taux"}:
-                if not anchors or all(abs(float(word["x0"]) - float(existing["x0"])) > 18 for existing in anchors):
-                    anchors.append(word)
+            if token in {"montant", "base", "taux"} and (
+                not anchors
+                or all(abs(float(word["x0"]) - float(existing["x0"])) > 18 for existing in anchors)
+            ):
+                anchors.append(word)
         anchors.sort(key=lambda item: float(item["x0"]))
         if len(anchors) != 6 or [ _fold(str(word["text"])) for word in anchors ] != [
             "montant", "base", "taux", "montant", "taux", "montant"
@@ -245,7 +248,9 @@ def _patient_lines(lines: list[_WordLine], page_width: float) -> tuple[list[dict
             remainder = text[cue.end():].strip(" :.-") if cue else ""
             date_match = DATE_RE.search(remainder)
             name = remainder[:date_match.start()].strip(" ,;.-") if date_match else remainder
-            name = re.sub(r"\b(?:n[ée]e?\s+le|date\s+de\s+naissance)\b.*$", "", name, flags=re.I).strip()
+            name = re.sub(
+                r"\b(?:n[ée]e?\s+le|date\s+de\s+naissance)\b.*$", "", name, flags=re.IGNORECASE
+            ).strip()
             if _fold(name).startswith("de naissance"):
                 name = ""
             if name and not re.fullmatch(r"[\d\s./-]+", name):
@@ -274,7 +279,7 @@ def _patient_lines(lines: list[_WordLine], page_width: float) -> tuple[list[dict
             private_line_indexes.add(index)
             continue
         if ADDRESS_CUE_RE.search(text) and not re.search(
-            r"caisse|assurance maladie|professionnel|\bCPAM\b", text, re.I
+            r"caisse|assurance maladie|professionnel|\bCPAM\b", text, re.IGNORECASE
         ):
             private_line_indexes.add(index)
             continue
