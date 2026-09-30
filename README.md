@@ -1,5 +1,7 @@
 # AmeliExtract
 
+[![Woodpecker CI](https://ci.wissem.pro/api/badges/9/status.svg)](https://ci.wissem.pro/repos/9)
+
 AmeliExtract converts text-based Ameli third-party payment statements to JSON on your computer. It keeps care rows, amounts, rates, treatment notes, professionals, providers, CPAM information and settlements while removing the insured person's name, NIR and postal address. The beneficiary's date of birth is retained. The tool does not upload files or run OCR.
 
 ## Install
