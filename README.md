@@ -1,59 +1,48 @@
 # AmeliExtract
 
-[![Woodpecker CI](https://ci.wissem.pro/api/badges/9/status.svg)](https://ci.wissem.pro/repos/9)
+Converts Ameli third-party payment statements (text PDFs) to JSON, locally, without the insured person's identity.
 
-AmeliExtract converts text-based Ameli third-party payment statements to JSON on your computer. It keeps care rows, amounts, rates, treatment notes, professionals, providers, CPAM information and settlements while removing the insured person's name, NIR and postal address. The beneficiary's date of birth is retained. The tool does not upload files or run OCR.
+[![CI](https://ci.wissem.pro/api/badges/9/status.svg)](https://ci.wissem.pro/repos/9)
+
+The output keeps care rows, amounts, rates, notes, professionals, providers, CPAM details and settlements. It drops the insured person's name, NIR and postal address; the beneficiary's date of birth is kept. Nothing is uploaded and there is no OCR: scans and unknown layouts are rejected rather than guessed.
 
 ## Install
 
-Use Python 3.11 or later:
+Python 3.11 or later.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -e .
+python -m pip install -e .          # add ".[dev]" for the tests
 ```
-
-For development and synthetic PDF tests, install `python -m pip install -e ".[dev]"`.
 
 ## Use
 
-Convert one PDF to an explicitly chosen JSON file:
-
 ```powershell
-ameli-extract .\statement.pdf -o .\statement.json
+ameli-extract .\statement.pdf -o .\statement.json   # one file
+ameli-extract .\statements -o .\exports            # every PDF of a folder, neutral output names
 ```
 
-Convert all PDFs immediately inside a folder. Exports receive neutral numbered names and do not copy the original PDF filename:
-
-```powershell
-ameli-extract .\statements -o .\exports
-```
-
-Existing JSON files are left in place unless `--force` is supplied. A folder run continues after an unreadable or unrecognized file and exits with status 1 when any file needs attention. A successful run exits 0; command or path errors exit 2. Error messages and progress output never include extracted document contents.
-
-The Python API is:
+Existing JSON files are kept unless `--force` is given. Exit status: 0 on success, 1 when a file needs attention (the folder run goes on), 2 on a command or path error. Messages never contain extracted content.
 
 ```python
 from ameli_extract import extract_pdf
 
-result = extract_pdf("statement.pdf")
-structured_data = result.to_dict()
+data = extract_pdf("statement.pdf").to_dict()
 ```
 
-`result.to_dict()` includes `schema_version`, `source` (SHA-256 and page count only), `document`, `beneficiaires`, `groupes`, `reglements`, `sections_complementaires` and `validation`. Each care row has its date, description, the six printed amount/rate values, indications and source page/line. Dates use ISO format. Money is a decimal string such as `"12.50"`; absent printed values are `null`. See [`examples/sample.json`](examples/sample.json) for a fully fictional result.
+The result holds `schema_version`, `source` (SHA-256 and page count), `document`, `beneficiaires`, `groupes`, `reglements`, `sections_complementaires` and `validation`. Dates are ISO, money is a decimal string such as `"12.50"`, missing values are `null`. See the fictional [examples/sample.json](examples/sample.json).
 
-Use neutral beneficiary IDs to associate care without exporting names. The original file path and name are not written into the JSON. The SHA-256 digest helps distinguish duplicate files; treat it and every exported JSON as private.
-
-## Privacy and supported documents
-
-The first version supports text-based PDFs with the Ameli payment table layout. It rejects scans and unknown layouts rather than guessing. PDF files, exported JSON, names, NIRs, addresses and real healthcare data must never be committed. Tests and examples use invented identities and amounts only.
-
-The extraction preserves non-identity text where the layout lets the program identify the insured-person block and addressee address. Review `validation.statut` and `validation.anomalies` before relying on a result. `a_verifier` means a field, total or identity detail could not be safely confirmed. A date of birth and health information remain sensitive even when direct identifiers have been removed.
+Check `validation.statut` before relying on a result: `a_verifier` means a field, a total or an identity detail could not be confirmed. Treat every export as private: health data and the date of birth remain sensitive.
 
 ## Development
 
 ```powershell
 python -m unittest discover -s tests -v
-python -m ameli_extract --help
 ```
+
+Never commit a real PDF, a real export or health data. Tests and examples use invented data only.
+
+## Release
+
+Versions follow Semantic Versioning and changes are listed in [CHANGELOG.md](CHANGELOG.md). Bump `version` in `pyproject.toml`, move the `Unreleased` entries under the new version, merge, then tag `vX.Y.Z`.
