@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.26,<2"]
+requires = ["hatchling>=1.33,<2"]
 build-backend = "hatchling.build"
 
 [project]
@@ -9,10 +9,10 @@ description = "Local, anonymizing extraction of Ameli healthcare-payment PDFs to
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-dependencies = ["pdfplumber>=0.11,<1"]
+dependencies = ["pdfplumber>=0.11.10,<1"]
 
 [project.optional-dependencies]
-dev = ["reportlab>=4,<6", "ruff>=0.11,<1"]
+dev = ["reportlab>=5.1,<6", "ruff>=0.17.4,<1"]
 
 [project.scripts]
 ameli-extract = "ameli_extract.cli:main"

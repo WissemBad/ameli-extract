@@ -5,6 +5,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ## [Unreleased]
 
 - MIT licence, and a note on the purpose of the tool in the README.
+- Raised minimum versions: pdfplumber 0.11.10, reportlab 5.1, ruff 0.17.4, hatchling 1.33.
 
 ## [1.0.0] - 2026-10-02
 
