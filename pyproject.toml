@@ -7,6 +7,7 @@ name = "ameli-extract"
 version = "1.0.0"
 description = "Local, anonymizing extraction of Ameli healthcare-payment PDFs to JSON"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = ["pdfplumber>=0.11,<1"]
 
