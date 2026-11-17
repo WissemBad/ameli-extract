@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+- MIT licence, and a note on the purpose of the tool in the README.
+
 ## [1.0.0] - 2026-10-02
 
 First release under the shared versioning of the wissem.pro projects.

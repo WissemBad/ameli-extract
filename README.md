@@ -6,6 +6,8 @@ Converts Ameli third-party payment statements (text PDFs) to JSON, locally, with
 
 The output keeps care rows, amounts, rates, notes, professionals, providers, CPAM details and settlements. It drops the insured person's name, NIR and postal address; the beneficiary's date of birth is kept. Nothing is uploaded and there is no OCR: scans and unknown layouts are rejected rather than guessed.
 
+A personal tool, written to keep my own statements in a structured form without copying identity data. Not affiliated with the Assurance Maladie.
+
 ## Install
 
 Python 3.11 or later.
@@ -46,3 +48,7 @@ Never commit a real PDF, a real export or health data. Tests and examples use in
 ## Release
 
 Versions follow Semantic Versioning and changes are listed in [CHANGELOG.md](CHANGELOG.md). Bump `version` in `pyproject.toml`, move the `Unreleased` entries under the new version, merge, then tag `vX.Y.Z`.
+
+## Licence
+
+[MIT](LICENSE)
