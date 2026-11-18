@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ameli-extract"
-version = "1.0.0"
+version = "1.0.1"
 description = "Local, anonymizing extraction of Ameli healthcare-payment PDFs to JSON"
 readme = "README.md"
 license = "MIT"
